@@ -9,7 +9,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 };
 
 exports.createPages = async ({graphql, actions}) => {
-  const {creatPage} = actions;
+  const {createPage} = actions;
 
   const {data} = await graphql(`
     {
@@ -24,13 +24,13 @@ exports.createPages = async ({graphql, actions}) => {
     }
   `);
 
-  data.allShopifyProduct.edges.forEach(({node}) => {
-    creatPage({
+  data.allShopifyProduct.edges.forEach(({ node }) => {
+    createPage({
       path: `products/${node.handle}`,
       context: {
-        shopifyId: node.shopifyId
+        shopifyId: node.shopifyId,
       },
-      component: path.resolve('./src/templates/ProductTemplate/index.js')
-    })
-  })
+      component: path.resolve('./src/templates/ProductTemplate/index.js'),
+    });
+  });
 };
