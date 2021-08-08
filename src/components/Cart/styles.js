@@ -4,15 +4,14 @@ import { StyledLink } from '../StyledLink';
 export const CartWrapper = styled(StyledLink).attrs(() => ({
     to: '/cart',
 }))`
-    margin-left: auto;
     display: flex;
     color: black;
     text-decoration: none;
-    // padding-left: 16px;
+    padding-left: 16px;
 
-    /* > svg {
+    > svg {
         margin: auto 0;
-    } */
+    }
 
     > div:last-child {
         padding-left: 8px;
