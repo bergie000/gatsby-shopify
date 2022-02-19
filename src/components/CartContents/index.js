@@ -1,8 +1,8 @@
 import React from 'react';
 import CartContext from 'context/CartContext';
-import { CartHeader, CartItem, CartFooter } from './styles';
-import { QuantityAdjuster } from '../QuantityAdjuster';
-import { RemoveItem } from '../RemoveItem';
+import { CartHeader, CartItem, CartFooter, Footer } from './styles';
+import { QuantityAdjuster, RemoveItem, Button } from 'components';
+import { navigate } from '@reach/router';
 
 export function CartContents() {
     const { checkout, updateLineItem } = React.useContext(CartContext);
@@ -14,12 +14,14 @@ export function CartContents() {
     return (
         <section>
             <h1>Your Cart:</h1>
-            <CartHeader>
-                <div>Product</div>
-                <div>Unit Price</div>
-                <div>Quantity</div>
-                <div>Amount</div>
-            </CartHeader>
+            {checkout?.lineItems && (
+                <CartHeader>
+                    <div>Product</div>
+                    <div>Unit Price</div>
+                    <div>Quantity</div>
+                    <div>Amount</div>
+                </CartHeader>
+            )}
             {checkout?.lineItems?.map(item => (
                 <CartItem key={item.variant.id}>
                     <div>
@@ -45,14 +47,29 @@ export function CartContents() {
                     </div>
                 </CartItem>
             ))}
-            <CartFooter>
+            {checkout?.lineItems && (
+                <CartFooter>
+                    <div>
+                        <strong>Total:</strong>
+                    </div>
+                    <div>
+                        <span>€{checkout?.totalPrice}</span>
+                    </div>
+                </CartFooter>
+            )}
+            {!checkout?.lineItems && (
+                <h4>Your cart is empty.</h4>
+            )}
+            <Footer>
                 <div>
-                    <strong>Total:</strong>
+                    <Button onClick={() => (navigate(-1))}>Continue shopping</Button>
                 </div>
                 <div>
-                    <span>€{checkout?.totalPrice}</span>
+                    {!!checkout?.webUrl &&
+                        <Button onClick={() => { window.location.href = checkout.webUrl; }}>Checkout</Button>
+                    }
                 </div>
-            </CartFooter>
+            </Footer>
         </section>
     );
 }
